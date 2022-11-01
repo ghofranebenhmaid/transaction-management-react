@@ -7,13 +7,38 @@ const TransactionForm = () => {
     enteredAmount: "",
   });
 
+  const [enteredAccountIdTouched, setEnteredAccountIdTouched] = useState(false);
+
+  const enteredAccountIdValid = userInput.enteredAccountID.trim() !== "";
+  const accountIdInputIsInvalid =
+    !enteredAccountIdValid && enteredAccountIdTouched;
+
+  const accountIdInputBlurHandler = (event) => {
+    setEnteredAccountIdTouched(true);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
+
+    if (!enteredAccountIdValid) {
+      return;
+    }
+
+    if (+userInput.enteredAmount < 1) {
+      return;
+    }
 
     setUserInput({
       enteredAccountID: "",
       enteredAmount: "",
     });
+
+    setEnteredAccountIdTouched(true);
+
+    if (!enteredAccountIdValid) {
+      return;
+    }
+    setEnteredAccountIdTouched(false);
   };
 
   const accountIdChangedHandler = (event) => {
@@ -28,14 +53,20 @@ const TransactionForm = () => {
   };
 
   return (
-    <form className={classes.form} onSubmit={submitHandler}>
+    <form  className={`${accountIdInputIsInvalid && classes.invalid} ${
+      classes.form
+    }`} onSubmit={submitHandler}>
       <label htmlFor="account_id">Account ID</label>
       <input
         type="text"
         id="account_id"
+        onBlur={accountIdInputBlurHandler}
         value={userInput.enteredAccountID}
         onChange={accountIdChangedHandler}
       />
+      {accountIdInputIsInvalid && (
+        <p className={classes["error-text"]}>Account id must not be empty.</p>
+      )}
       <label htmlFor="amount">Amount</label>
       <input
         type="number"
