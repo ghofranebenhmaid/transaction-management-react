@@ -2,8 +2,12 @@ import Head from "next/head";
 import Footer from "../components/Footer";
 import TransactionForm from "../components/TransactionForm";
 import Transactions from "../components/Transactions";
+import useFetch from "../hooks/useFetch";
 
 export default function Home() {
+
+  const url = `https://infra.devskills.app/api/accounting/transactions`;
+  const { data, loading, error } = useFetch(url);
   const DATA_TEST = [
     {
       transaction_id: "7b7ba0d4-b114-48ee-b202-6b6314ca43af",
@@ -33,7 +37,7 @@ export default function Home() {
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <TransactionForm />
-        <Transactions items={DATA_TEST} />
+        <Transactions items={data} />
       </main>
       <Footer />
     </div>
