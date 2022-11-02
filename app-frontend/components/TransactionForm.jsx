@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./form.module.css";
 
-const TransactionForm = () => {
+const TransactionForm = (props) => {
   const [userInput, setUserInput] = useState({
     enteredAccountID: "",
     enteredAmount: "",

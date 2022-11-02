@@ -12,19 +12,19 @@ export default function Home() {
   const DATA_TEST = [
     {
       transaction_id: "7b7ba0d4-b114-48ee-b202-6b6314ca43af",
-      accountId: "65dd37be-e530-4b38-ae2a-20bc7148ca8a",
+      account_id: "65dd37be-e530-4b38-ae2a-20bc7148ca8a",
       amount: 2,
       created_at: "2022-11-01T17:27:43.668298+00:00",
     },
     {
       transaction_id: "9fa7135e-06d8-4f64-9a9d-e70e16f1d724",
-      accountId: "65dd37be-e530-4b38-ae2a-20bc7148ca8a",
+      account_id: "65dd37be-e530-4b38-ae2a-20bc7148ca8a",
       amount: 3,
       created_at: "2022-11-01T14:56:28.614214+00:00",
     },
     {
       transaction_id: "76ba6c28-38f7-4766-b462-6933b4a579dc",
-      accountId: "eaf64a03-e06e-4b42-a1bc-740a61d8e831",
+      account_id: "eaf64a03-e06e-4b42-a1bc-740a61d8e831",
       amount: 30,
       created_at: "2022-11-01T14:56:08.116346+00:00",
     },
@@ -33,6 +33,19 @@ export default function Home() {
   const [transactionHistory, setTransactionHistory] = useState([]);
 
   const saveTransactionHistory = (transactions) => {
+    const listTransactionByAccountId =
+      DATA_TEST.length > 0 &&
+      DATA_TEST.filter((val) => {
+        if (
+          val.account_id
+            .toLowerCase()
+            .includes(transactions.accountId.toLowerCase())
+        ) {
+          return val;
+        }
+      });
+    console.log(listTransactionByAccountId);
+
     setTransactionHistory((enteredTransaction) => {
       return [transactions, ...enteredTransaction];
     });
