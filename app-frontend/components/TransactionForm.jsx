@@ -27,6 +27,12 @@ const TransactionForm = () => {
     if (+userInput.enteredAmount < 1) {
       return;
     }
+    const transaction = {
+      accountId: userInput.enteredAccountID,
+      amount: +userInput.enteredAmount,
+    };
+
+    props.onSaveTransactionHistory(transaction);
 
     setUserInput({
       enteredAccountID: "",
@@ -53,9 +59,12 @@ const TransactionForm = () => {
   };
 
   return (
-    <form  className={`${accountIdInputIsInvalid && classes.invalid} ${
-      classes.form
-    }`} onSubmit={submitHandler}>
+    <form
+      className={`${accountIdInputIsInvalid && classes.invalid} ${
+        classes.form
+      }`}
+      onSubmit={submitHandler}
+    >
       <label htmlFor="account_id">Account ID</label>
       <input
         type="text"

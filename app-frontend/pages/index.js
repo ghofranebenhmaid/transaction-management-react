@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Head from "next/head";
 import Footer from "../components/Footer";
 import TransactionForm from "../components/TransactionForm";
@@ -5,7 +7,6 @@ import Transactions from "../components/Transactions";
 import useFetch from "../hooks/useFetch";
 
 export default function Home() {
-
   const url = `https://infra.devskills.app/api/accounting/transactions`;
   const { data, loading, error } = useFetch(url);
   const DATA_TEST = [
@@ -28,6 +29,15 @@ export default function Home() {
       created_at: "2022-11-01T14:56:08.116346+00:00",
     },
   ];
+
+  const [transactionHistory, setTransactionHistory] = useState([]);
+
+  const saveTransactionHistory = (transactions) => {
+    setTransactionHistory((enteredTransaction) => {
+      return [transactions, ...enteredTransaction];
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <Head>
@@ -36,8 +46,8 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <TransactionForm />
-        <Transactions items={data} />
+        <TransactionForm onSaveTransactionHistory={saveTransactionHistory} />
+        <Transactions items={DATA_TEST} />
       </main>
       <Footer />
     </div>
