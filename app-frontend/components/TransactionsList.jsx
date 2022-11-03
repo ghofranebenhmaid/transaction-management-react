@@ -1,8 +1,9 @@
 import React from "react";
+import Card from "./Card";
 
 const TransactionsList = (props) => {
   return (
-    <div>
+    <Card>
       <p>
         Transferred <strong> {props.amount}$</strong> from account{" "}
         <strong>{props.accountId}</strong>
@@ -10,7 +11,7 @@ const TransactionsList = (props) => {
       <p>
         The current account balance <strong>{props.amountBalance}$</strong>
       </p>
-    </div>
+    </Card>
   );
 };
 

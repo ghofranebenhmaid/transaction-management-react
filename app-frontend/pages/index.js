@@ -58,10 +58,35 @@ export default function Home() {
       Math.max.apply(null, transactionDateHistory)
     );
 
-    console.log(maxDateTransactionHistory);
+
+    const filteredTransactionByDate =
+      listTransactionByAccountId &&
+      listTransactionByAccountId.filter((obj) => {
+        if (
+          String(new Date(obj.created_at)) === String(maxDateTransactionHistory)
+        ) {
+          return obj;
+        }
+      });
+
+    const amountFromData =
+      filteredTransactionByDate &&
+      filteredTransactionByDate.map((item) => {
+        return item.amount;
+      });
+
+    const amountFromInput = +transactions.amount;
+    const amountBalance = +amountFromData - +amountFromInput;
 
     setTransactionHistory((enteredTransaction) => {
-      return [transactions, ...enteredTransaction];
+      return [
+        {
+          accountId: transactions.accountId,
+          amount: +transactions.amount,
+          amountBalance: +amountBalance,
+        },
+        ...enteredTransaction,
+      ];
     });
   };
 
@@ -74,7 +99,7 @@ export default function Home() {
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <TransactionForm onSaveTransactionHistory={saveTransactionHistory} />
-        <Transactions items={DATA_TEST} />
+        <Transactions items={transactionHistory} />
       </main>
       <Footer />
     </div>
