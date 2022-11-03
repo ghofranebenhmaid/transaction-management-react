@@ -20,7 +20,7 @@ export default function Home() {
       transaction_id: "9fa7135e-06d8-4f64-9a9d-e70e16f1d724",
       account_id: "65dd37be-e530-4b38-ae2a-20bc7148ca8a",
       amount: 3,
-      created_at: "2022-11-01T14:56:28.614214+00:00",
+      created_at: "2023-01-01T14:56:28.614214+00:00",
     },
     {
       transaction_id: "76ba6c28-38f7-4766-b462-6933b4a579dc",
@@ -33,6 +33,7 @@ export default function Home() {
   const [transactionHistory, setTransactionHistory] = useState([]);
 
   const saveTransactionHistory = (transactions) => {
+    //? Filter list by account id.
     const listTransactionByAccountId =
       DATA_TEST.length > 0 &&
       DATA_TEST.filter((val) => {
@@ -44,7 +45,20 @@ export default function Home() {
           return val;
         }
       });
-    console.log(listTransactionByAccountId);
+
+    //? Sort transaction account by date.
+    const transactionDateHistory =
+      listTransactionByAccountId &&
+      listTransactionByAccountId.map((item) => {
+        return new Date(item.created_at);
+      });
+
+    //? Get max Date.
+    const maxDateTransactionHistory = new Date(
+      Math.max.apply(null, transactionDateHistory)
+    );
+
+    console.log(maxDateTransactionHistory);
 
     setTransactionHistory((enteredTransaction) => {
       return [transactions, ...enteredTransaction];
