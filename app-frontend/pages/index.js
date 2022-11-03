@@ -99,6 +99,8 @@ export default function Home() {
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
         <TransactionForm onSaveTransactionHistory={saveTransactionHistory} />
+        {error && <p>Error!!!!!</p>}
+        {loading && <p>Loading...</p>}
         <Transactions items={transactionHistory} />
       </main>
       <Footer />

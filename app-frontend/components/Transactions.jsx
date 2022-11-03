@@ -2,6 +2,9 @@ import React from "react";
 import TransactionsList from "./TransactionsList";
 
 const Transactions = (props) => {
+  if (props.items.length === 0) {
+    return <h3>No history..!</h3>;
+  }
   return (
     <>
       {props.items.map((element, index) => (
