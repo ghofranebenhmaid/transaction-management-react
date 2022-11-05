@@ -31,12 +31,13 @@ export default function Home() {
   ];
 
   const [transactionHistory, setTransactionHistory] = useState([]);
+  const [isExist, setIsExist] = useState(false);
 
   const saveTransactionHistory = (transactions) => {
     //? Filter list by account id.
     const listTransactionByAccountId =
-      DATA_TEST.length > 0 &&
-      DATA_TEST.filter((val) => {
+      data.length > 0 &&
+      data.filter((val) => {
         if (
           val.account_id
             .toLowerCase()
@@ -45,7 +46,6 @@ export default function Home() {
           return val;
         }
       });
-
     //? Sort transaction account by date.
     const transactionDateHistory =
       listTransactionByAccountId &&
@@ -57,7 +57,6 @@ export default function Home() {
     const maxDateTransactionHistory = new Date(
       Math.max.apply(null, transactionDateHistory)
     );
-
 
     const filteredTransactionByDate =
       listTransactionByAccountId &&
@@ -78,16 +77,30 @@ export default function Home() {
     const amountFromInput = +transactions.amount;
     const amountBalance = +amountFromData - +amountFromInput;
 
-    setTransactionHistory((enteredTransaction) => {
-      return [
-        {
-          accountId: transactions.accountId,
-          amount: +transactions.amount,
-          amountBalance: +amountBalance,
-        },
-        ...enteredTransaction,
-      ];
+    console.log({
+      data,
+      listTransactionByAccountId,
+      amountBalance,
+      filteredTransactionByDate,
     });
+
+    if (
+      data.filter((item) => item.account_id === transactions.accountId).length
+    ) {
+      setTransactionHistory((enteredTransaction) => {
+        return [
+          {
+            accountId: transactions.accountId,
+            amount: +transactions.amount,
+            amountBalance: +amountBalance,
+          },
+          ...enteredTransaction,
+        ];
+      });
+      setIsExist(false);
+    } else {
+      setIsExist(true);
+    }
   };
 
   return (
@@ -101,6 +114,7 @@ export default function Home() {
         <TransactionForm onSaveTransactionHistory={saveTransactionHistory} />
         {error && <p>Error!!!!!</p>}
         {loading && <p>Loading...</p>}
+        {isExist && <p>Please enter a valid account id.</p>}
         <Transactions items={transactionHistory} />
       </main>
       <Footer />
